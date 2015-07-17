@@ -12,8 +12,7 @@ class Prompter:
     def __init__(self, database, l):
         self.database = database
         self.l = l
-  
-  # Ensures that there is at least one unanswered ping at the end of the queue.
+    # Ensures that there is at least one unanswered ping at the end of the queue.
     def ensure_unanswered_ping(self):
         current = time.time()
         t = self.database.get_last_ping()
@@ -28,3 +27,4 @@ class Prompter:
             pass
         else:
             self.prompt()
+

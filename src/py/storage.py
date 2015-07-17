@@ -13,7 +13,7 @@ class UserPingDatabase:
         self.conn = sqlite3.connect(self.get_database_filename(username))
         self.cursor = self.conn.cursor()
         self.cursor.execute('''create table if not exists pings
-      (time bigint, creation_time bigint, response text, response_time bigint)''');
+      (time bigint, creation_time bigint, response text, response_time bigint)''')
         self.conn.commit()
 
     @staticmethod
@@ -53,6 +53,6 @@ class UserPingDatabase:
         elif len(rows) == 1:
             return rows[0][0]
         else:
-            raise ValueError("Expected at most 1 ping, got " + str(len(rows))
+            raise ValueError("Expected at most 1 ping, got " + str(len(rows)))
 
 
