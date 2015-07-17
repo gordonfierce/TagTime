@@ -28,14 +28,14 @@ class UserPingDatabase:
 
     def add_pings(self, ping_times):
         for t in ping_times:
-        self.add_ping(t)
+            self.add_ping(t)
 
     def is_ping_answered(self, t):
         self.cursor.execute('''select response_time from pings
                            where time = ? limit 1''', (t,))    
         rows = [row for row in self.cursor]
         if len(rows) == 0:
-        raise ValueError('No pings found for time ' + str(t))
+            raise ValueError('No pings found for time ' + str(t))
     return rows[0][0] != "null"
 
     def get_last_ping_before(self, t):
@@ -53,6 +53,6 @@ class UserPingDatabase:
         elif len(rows) == 1:
             return rows[0][0]
         else:
-            raise ValueError('Expected at most 1 ping, got " + str(len(rows))
+            raise ValueError("Expected at most 1 ping, got " + str(len(rows))
 
 
