@@ -7,6 +7,7 @@ author: Hannes Schulz <schulz@ais.uni-bonn.de>
 license: 3 clause BSD
 
 """
+from __future__ import print_function
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -68,7 +69,7 @@ class TagTimeLog:
         self.D = self.D.sort()
         start = self.D.index.searchsorted(startend[0])
         end = self.D.index.searchsorted(startend[1])
-        print "Selecting date range between", start, "and", end
+        print("Selecting date range between", start, "and", end)
         self.D = self.D.ix[start:end]
 
         self.rng = "%s -- %s" % (str(dt2d(self.D.index.min())),
@@ -79,7 +80,7 @@ class TagTimeLog:
         # by default, that's just n_days; but it gets less if we excluded some
         # week days.
         n_days = max(1, (self.D.index.max() - self.D.index.min()).days)
-        print "Number of days: ", n_days
+        print("Number of days: ", n_days)
         self.day_normalizer = n_days - n_days * len(np.unique(skipweekdays)) / 7.
 
         #self.D = self.D.fillna(0)
@@ -99,7 +100,7 @@ class TagTimeLog:
             offsetlist += np.random.uniform(-0.1, 0.1, size=offsetlist.shape)
         weights = np.exp(- offsetlist ** 2 / self.sigma ** 2)
         weights /= weights.sum()
-        print weights
+        print(weights)
 
         for line in handle:
             line = re.sub(r'\s*\[.*?\]\s*$', '', line)
@@ -135,7 +136,7 @@ class TagTimeLog:
                         continue
                     D[t].append(dtx)
                     V[t].append(weight * duration)
-        print "Excluded %d entries" % n_excluded
+        print("Excluded %d entries" % n_excluded)
 
         for f in D.keys():
             D[f] = pd.Series(V[f], index=D[f])
@@ -352,7 +353,7 @@ class TagTimeLog:
         # sort by time spent
         keys = sorted(D.keys(), key=lambda x: D[x], reverse=True)
         values = [D[x] for x in keys]
-        print "day_normalizer: ", self.day_normalizer
+        print("day_normalizer: ", self.day_normalizer)
 
         # restrict key selection to keys which have existing values
         idx = np.where(~np.isnan(values))
@@ -360,7 +361,7 @@ class TagTimeLog:
         values = np.array(values)[idx] / self.day_normalizer
         if other:
             n_hours = self.includehours[1] - self.includehours[0]
-            print "total hours: %2.3f, should be around %d" % (values.sum(), n_hours)
+            print("total hours: %2.3f, should be around %d" % (values.sum(), n_hours))
 
         def absspec(v):
             if v < 1:
