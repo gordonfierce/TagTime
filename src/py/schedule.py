@@ -4,14 +4,17 @@
 # are separated by an exponential distribution, with
 # expected interval time = 1 / lambda.
 
+from __future__ import division
+from __future__ import print_function
+from past.utils import old_div
 from random import expovariate
 from datetime import timedelta
 
 # Returns a stocastically determined next ping time after time t.
 def get_next_ping_time(last_time, interval, **kwargs):
-  delta = max(kwargs.get('min_delta', 0), expovariate(1.0/interval))
+  delta = max(kwargs.get('min_delta', 0), expovariate(old_div(1.0,interval)))
   if kwargs['debug']:
-    print 'delta: ', timedelta(seconds=round(delta))
+    print('delta: ', timedelta(seconds=round(delta)))
   return last_time + delta
 
 # Returns next pings starting from 'start' so that the last ping
@@ -26,4 +29,4 @@ def get_next_ping_times_through(start, end, interval, **kwargs):
   return ping_times
 
 if __name__ == '__main__':
-  print get_next_ping_times_through(100, 500, 20, min_delta=5, debug=True)
+  print(get_next_ping_times_through(100, 500, 20, min_delta=5, debug=True))
